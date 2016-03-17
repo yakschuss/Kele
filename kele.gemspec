@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.homepage        = 'http://rubygems.org/gems/kele'
   spec.license         = 'MIT'
   spec.add_runtime_dependency 'httparty', '~> 0.13'
-  spec.version         = Kele::VERSION
+  spec.version         = '0.0.1'
   spec.summary         = %q{Wrapper for Bloc.io's API}
   spec.license         = "MIT"
 
