@@ -24,4 +24,11 @@ include HTTParty
     return body
   end
 
+  def get_mentor_availability
+    student_info = self.class.get(base_api_endpoint + "users/me", headers: { "authorization" => @auth_token })
+    body = JSON.parse(student_info.body)
+    id = body["current_enrollment"]["mentor_id"]
+    response = self.class.get(base_api_endpoint + "mentors/#{id}/student_availability", headers: { "authorization" => @auth_token })
+  end
+
 end
