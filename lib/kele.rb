@@ -21,7 +21,7 @@ include Roadmap
   def get_me
     response = self.class.get(base_api_endpoint + "users/me", headers: { "authorization" => @auth_token })
     body = JSON.parse(response.body)
-    return body
+    binding.pry
   end
 
   def get_mentor_availability
@@ -43,5 +43,27 @@ include Roadmap
     end
 
   end
+#not working, returning 500 on all requests
+  def create_message(subject = nil, body = nil, token = nil)
+    data = {
+      user_id: student_id,
+      recipient_id: student_info("mentor_id"),
+      token: token,
+      subject: subject,
+      "stripped-text" => body
+    }
+    data.delete_if { |k, v| v.nil? }
+
+    response = self.class.post(base_api_endpoint + "messages", headers: { "authorization" => @auth_token }, body: data)
+    body = JSON.parse(response.body)
+  end
+
+private
+
+def student_id
+  student_info = self.class.get(base_api_endpoint + "users/me", headers: { "authorization" => @auth_token })
+  body = JSON.parse(student_info.body)
+  body["id"]
+end
 
 end
