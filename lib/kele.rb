@@ -21,7 +21,6 @@ include Roadmap
   def get_me
     response = self.class.get(base_api_endpoint + "users/me", headers: { "authorization" => @auth_token })
     body = JSON.parse(response.body)
-    binding.pry
   end
 
   def get_mentor_availability
@@ -58,6 +57,19 @@ include Roadmap
     body = JSON.parse(response.body)
   end
 
+  def create_submission(branch, commit_link, checkpoint_id, comment)
+    data = {
+      assignment_branch: branch,
+      assignment_commit_link: commit_link,
+      checkpoint_id: checkpoint_id,
+      comment: comment,
+      enrollment_id: student_info("id")
+    }
+    data.delete_if { |k, v| v.nil? }
+    response = self.class.post(base_api_endpoint + "checkpoint_submissions", headers: { "authorization" => @auth_token }, body: data)
+    body = JSON.parse(response.body)
+
+  end
 private
 
 def student_id
